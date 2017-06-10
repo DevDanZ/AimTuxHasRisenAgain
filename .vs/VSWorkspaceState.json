@@ -1,0 +1,15 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\.github",
+    "\\pkg",
+    "\\src",
+    "\\src\\ATGUI",
+    "\\src\\Hacks",
+    "\\src\\ImGUI",
+    "\\src\\json",
+    "\\src\\SDK"
+  ],
+  "SelectedNode": "\\load",
+  "PreviewInSolutionExplorer": false
+}

@@ -1,0 +1,38 @@
+#!/bin/sh
+
+echo "AIMTUX IS CURRENTLY DETECTED, NO POINT OF TRYING / INJECTING. - DanZ ( Injection Side Developer of AimTux ). We're sorry for this, updates about the Cheat will be released @ https://gitter.im/AimTuxOfficial/Lobby . Aware that this could've been our last update/ release ever... <3
+"
+exit
+
+csgo_pid=$(pidof csgo_linux64)
+if [ -z "$csgo_pid" ]; then
+    /bin/echo -e "AIMTUX IS CURRENTLY DETECTED, NO POINT OF TRYING / INJECTING. - DanZ ( Injection Side Developer of AimTux )."
+    exit 1
+fi
+
+if [ ! -d ".git" ]; then
+    /bin/echo "AIMTUX IS CURRENTLY DETECTED, NO POINT OF TRYING / INJECTING. - DanZ ( Injection Side Developer of AimTux )."
+fi
+
+#Credit: Aixxe @ aixxe.net
+if grep -q libAimTux.so /proc/$csgo_pid/maps; then
+    /bin/echo -e "\e[33mAimTux is already injected... Aborting...\e[0m"
+    exit
+fi
+
+input="$(
+sudo gdb -n -q -batch \
+  -ex "attach $csgo_pid" \
+  -ex "set \$dlopen = (void*(*)(char*, int)) dlopen" \
+  -ex "call \$dlopen(\"$(pwd)/libAimTux.so\", 1)" \
+  -ex "detach" \
+  -ex "quit"
+)"
+
+last_line="${input##*$'\n'}"
+
+if [ "$last_line" != "\$1 = (void *) 0x0" ]; then
+    /bin/echo -e "\e[32mSuccessfully injected!\e[0m"
+else
+    /bin/echo -e "\e[31mInjection failed, make sure you've compiled...\e[0m"
+fi
